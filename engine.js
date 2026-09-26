@@ -303,8 +303,8 @@
     return [
       '<div id="overlay" style="display:none;position:fixed;top:0;left:0;width:100%;height:100%;background:rgba(0,0,0,0.5);z-index:9999;">',
       '<div style="background:#fff;margin:10% auto;padding:24px;max-width:400px;border-radius:8px;text-align:center;">',
-      '<p style="font-size:1rem;font-weight:600;margin-bottom:12px;">Enter any VIN to check vehicle history</p>',
-      '<input id="ov-vin" type="text" maxlength="17" placeholder="17-digit VIN number" style="width:100%;padding:10px;font-size:1rem;border:1px solid #ccc;border-radius:4px;box-sizing:border-box;">',
+      // '<p style="font-size:1rem;font-weight:600;margin-bottom:12px;">Enter any VIN to check vehicle history</p>',
+      // '<input id="ov-vin" type="text" maxlength="17" placeholder="17-digit VIN number" style="width:100%;padding:10px;font-size:1rem;border:1px solid #ccc;border-radius:4px;box-sizing:border-box;">',
       '<button onclick="doVinCheck()" style="margin-top:12px;width:100%;padding:12px;background:#1a56db;color:#fff;border:none;border-radius:4px;font-size:1rem;cursor:pointer;">Check VIN Free</button>',
       '<p style="margin-top:8px;font-size:.8rem;color:#666;">No sign up. No payment. Instant results.</p>',
       '</div></div>',
