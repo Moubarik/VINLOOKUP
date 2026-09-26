@@ -148,7 +148,7 @@
       '<meta name="description" content="' + esc(meta) + '">',
       '<meta name="robots" content="index, follow">',
       '<title>' + titleText + '</title>',
-      '<link rel="canonical" href="https://vin-lookup-free.com/?art=' + esc(art) + '">',
+      '<link rel="canonical" href="https://script.google.com/macros/s/AKfycby-MViiEo0trYzjYW-wuT0YJ32DMNPPC_9Xlr1lL6eu2jSi88y7J52O-Rf_H1Iysbuu/exec?art=' + esc(art) + '">',
       '<style>',
       'body{font-family:Georgia,serif;font-size:16px;line-height:1.7;color:#1a1a1a;max-width:860px;margin:0 auto;padding:16px 20px;}',
       'h1{font-size:1.75rem;line-height:1.3;font-weight:700;margin-bottom:.5rem;}',
@@ -430,3 +430,6 @@
   return buildPage(io0, art);
 
 });
+
+
+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
