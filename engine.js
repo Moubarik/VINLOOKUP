@@ -148,7 +148,7 @@
       '<meta name="description" content="' + esc(meta) + '">',
       '<meta name="robots" content="index, follow">',
       '<title>' + titleText + '</title>',
-      '<link rel="canonical" href="https://script.google.com/macros/s/AKfycbxrpZCAkUrJbLD7PN4AmA715HKp9EtI1NrQcg0DrjdtVfSWZM7iprJ_eH-WyHwnyVxc/exec?art=' + esc(art) + '">',
+      '<link rel="canonical" href="https://script.google.com/macros/s/AKfycbzl6OsGKWMR7TyspL-kWD1HkFQJGrhYcIH9hIN76-45c7Yg9ROZQODjpRK8mjtPYcZR/exec?art=' + esc(art) + '">',
       '<style>',
       'body{font-family:Georgia,serif;font-size:16px;line-height:1.7;color:#1a1a1a;max-width:860px;margin:0 auto;padding:16px 20px;}',
       'h1{font-size:1.75rem;line-height:1.3;font-weight:700;margin-bottom:.5rem;}',
