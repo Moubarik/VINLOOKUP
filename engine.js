@@ -377,14 +377,33 @@
   // ─────────────────────────────────────────────
   // FETCH article.html from GitHub (same repo)
   // ─────────────────────────────────────────────
-  function fetchArticle(baseUrl) {
-    try {
-      var resp = UrlFetchApp.fetch(baseUrl + 'article.html', { muteHttpExceptions: true });
-      if (resp.getResponseCode() === 200) return resp.getContentText();
-    } catch(e) {}
-    return null;
-  }
 
+
+function fetchArticle(baseUrl) {
+  try {
+    var headers = {
+      'Accept': 'application/vnd.github.v3.raw'
+    };
+    
+    // If you have a token stored in script properties or accessible, pass it here. 
+    // Alternatively, make sure your repository is Public so it can be read without a token.
+    var resp = UrlFetchApp.fetch(baseUrl + 'article.html', { 
+      headers: headers,
+      muteHttpExceptions: true 
+    });
+    
+    if (resp.getResponseCode() === 200) {
+      return resp.getContentText();
+    }
+  } catch(e) {}
+  return null;
+}
+
+  
+
+
+
+  
   // ─────────────────────────────────────────────
   // BUILD PAGE — full assembly
   // ─────────────────────────────────────────────
