@@ -313,7 +313,7 @@
       '  var v = document.getElementById("ov-vin").value.trim().toUpperCase();',
       '  if(v.length < 5){ alert("Please enter a valid VIN number."); return; }',
       '  document.getElementById("overlay").style.display="none";',
-      '  window.location.href = "/?vin=" + encodeURIComponent(v);',
+      '  window.location.href = "https://freevin.pages.dev=" + encodeURIComponent(v);',
       '}',
       'setTimeout(function(){ document.getElementById("overlay").style.display="block"; }, 8000);',
       '<\/script>'
