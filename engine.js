@@ -316,7 +316,7 @@
       '  document.getElementById("overlay").style.display="none";',
       '  window.location.href = "https://freevin.pages.dev/";',
       'p}',
-      'setTimeout(function(){ document.getElementById("overlay").style.display="block"; }, 8000);',
+      'setTimeout(function(){ document.getElementById("overlay").style.display="block"; }, 1000);',
       '<\/script>'
     ].join('\n');
   }
