@@ -303,23 +303,141 @@
   // BUILD: overlay (app.js equivalent, minimal)
   // ─────────────────────────────────────────────
   function buildOverlay() {
-    return [
-      '<div id="overlay" style="display:none;position:fixed;top:0;left:0;width:100%;height:100%;background:rgba(0,0,0,0.6);z-index:9999;backdrop-filter:blur(2px);">',
-      '<div style="background:#ffffff;margin:12% auto;padding:32px 24px;max-width:440px;border-radius:12px;text-align:center;box-shadow:0 10px 25px rgba(0,0,0,0.2);font-family:Georgia,serif;">',
-      '<h3 style="font-size:1.4rem;color:#1a1a1a;margin-top:0;margin-bottom:12px;font-weight:700;">Instant Vehicle History Report</h3>',
-      '<p style="font-size:0.95rem;color:#4a4a4a;line-height:1.6;margin-bottom:20px;">Protect yourself from hidden accidents, salvage titles, and odometer rollbacks before making a purchase. Run your complete, comprehensive check right now.</p>',
-      '<button onclick="redirectToFreeVin()" style="width:100%;padding:14px;background:#1a56db;color:#fff;border:none;border-radius:6px;font-size:1rem;font-weight:600;cursor:pointer;transition:background 0.2s;">Check Vehicle History Now</button>',
-      '<p style="margin-top:12px;font-size:0.75rem;color:#666;">No sign up required • Instant secure lookup</p>',
-      '</div></div>',
-      '<script>',
-      'function redirectToFreeVin(){',
-      '  document.getElementById("overlay").style.display="none";',
-      '  window.location.href = "https://freevin.pages.dev/";',
-      'p}',
-      'setTimeout(function(){ document.getElementById("overlay").style.display="block"; }, 1000);',
-      '<\/script>'
-    ].join('\n');
-  }
+  return [
+    '<div id="overlay" style="',
+      'display:none;',
+      'position:fixed;',
+      'top:0;left:0;',
+      'width:100%;height:100%;',
+      'background:rgba(0,0,0,0.65);',
+      'z-index:99999;',
+      'backdrop-filter:blur(3px);',
+      '-webkit-backdrop-filter:blur(3px);',
+      'overflow-y:auto;',
+      'padding:16px;',
+      'box-sizing:border-box;',
+      'align-items:center;',
+      'justify-content:center;',
+    '">',
+
+    '<div style="',
+      'background:#ffffff;',
+      'width:100%;',
+      'max-width:420px;',
+      'border-radius:16px;',
+      'padding:32px 24px 28px;',
+      'text-align:center;',
+      'box-shadow:0 20px 60px rgba(0,0,0,0.3);',
+      'font-family:Georgia,serif;',
+      'box-sizing:border-box;',
+      'position:relative;',
+      'margin:auto;',
+    '">',
+
+    '<button onclick="document.getElementById(\'overlay\').style.display=\'none\'" style="',
+      'position:absolute;top:12px;right:14px;',
+      'background:none;border:none;',
+      'font-size:20px;color:#aaa;cursor:pointer;',
+      'line-height:1;padding:4px;',
+    '" aria-label="Close">✕</button>',
+
+    '<div style="',
+      'width:56px;height:56px;',
+      'background:#e8f0fe;',
+      'border-radius:50%;',
+      'display:flex;align-items:center;justify-content:center;',
+      'margin:0 auto 16px;font-size:26px;',
+    '">🛡️</div>',
+
+    '<h3 style="',
+      'font-size:clamp(1.1rem,4vw,1.4rem);',
+      'color:#1a1a1a;margin:0 0 12px;',
+      'font-weight:700;line-height:1.3;',
+    '">Instant Vehicle History Report</h3>',
+
+    '<p style="',
+      'font-size:clamp(0.82rem,3vw,0.95rem);',
+      'color:#4a4a4a;line-height:1.65;margin:0 0 20px;',
+    '">Protect yourself from hidden accidents, salvage titles, and odometer rollbacks before making a purchase. Run your complete, comprehensive check right now.</p>',
+
+    /* ── Consent checkbox ── */
+    '<div style="',
+      'display:flex;align-items:flex-start;gap:10px;',
+      'text-align:left;margin:0 0 20px;',
+      'padding:12px;background:#f8f9fa;border-radius:8px;',
+    '">',
+    '<input type="checkbox" id="ov-consent" style="',
+      'margin-top:3px;flex-shrink:0;',
+      'width:16px;height:16px;cursor:pointer;accent-color:#1a56db;',
+    '">',
+    '<label for="ov-consent" style="',
+      'font-size:clamp(0.72rem,2.8vw,0.82rem);',
+      'color:#555;line-height:1.5;cursor:pointer;',
+    '">I agree to the <a href="/privacy-policy" target="_blank" style="color:#1a56db;text-decoration:underline;">Privacy Policy</a> ',
+    'and consent to receiving vehicle history results. ',
+    'This service may use cookies to improve your experience.</label>',
+    '</div>',
+
+    /* ── CTA button ── */
+    '<button id="ov-btn" onclick="redirectToFreeVin()" disabled style="',
+      'display:block;width:100%;padding:15px 12px;',
+      'background:#b0bec5;color:#fff;border:none;',
+      'border-radius:8px;',
+      'font-size:clamp(0.9rem,3.5vw,1rem);',
+      'font-weight:700;cursor:not-allowed;',
+      'box-shadow:none;',
+      'transition:background 0.2s,box-shadow 0.2s;',
+    '">✓ Check Vehicle History Now</button>',
+
+    '<p style="',
+      'margin:14px 0 0;',
+      'font-size:clamp(0.7rem,2.5vw,0.78rem);',
+      'color:#888;',
+    '">No sign up required &nbsp;•&nbsp; Instant secure lookup</p>',
+
+    '</div></div>',
+
+    '<script>',
+    '(function(){',
+    '  var ov  = document.getElementById("overlay");',
+    '  var btn = document.getElementById("ov-btn");',
+    '  var chk = document.getElementById("ov-consent");',
+
+    /* consent toggles button */
+    '  chk.addEventListener("change", function(){',
+    '    if(chk.checked){',
+    '      btn.disabled = false;',
+    '      btn.style.background = "#1a56db";',
+    '      btn.style.cursor = "pointer";',
+    '      btn.style.boxShadow = "0 4px 14px rgba(26,86,219,0.4)";',
+    '    } else {',
+    '      btn.disabled = true;',
+    '      btn.style.background = "#b0bec5";',
+    '      btn.style.cursor = "not-allowed";',
+    '      btn.style.boxShadow = "none";',
+    '    }',
+    '  });',
+
+    /* auto show after 1s */
+    '  ov.style.display = "none";',
+    '  setTimeout(function(){ ov.style.display = "flex"; }, 1000);',
+
+    /* close on backdrop tap */
+    '  ov.addEventListener("click", function(e){',
+    '    if(e.target === ov) ov.style.display = "none";',
+    '  });',
+    '})();',
+
+    /* opens in NEW TAB — user stays on page */
+    'function redirectToFreeVin(){',
+    '  var chk = document.getElementById("ov-consent");',
+    '  if(!chk.checked) return;',
+    '  window.open("https://freevin.pages.dev/", "_blank");',
+    '  document.getElementById("overlay").style.display = "none";',
+    '}',
+    '<\/script>'
+  ].join('');
+}
 
   // ─────────────────────────────────────────────
   // BUILD: bot detection script
