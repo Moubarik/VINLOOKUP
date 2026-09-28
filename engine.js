@@ -306,8 +306,8 @@
 function buildOverlay() {
   return [
     '<style>',
-    '@media(max-width:600px){',
-    '  #ov-card{margin:8% 16px!important;padding:24px 16px!important;}',
+    '@media(max-width:300px){',
+    '  #ov-card{margin:8% 16px!important;padding:24px 30px!important;}',
     '  #ov-card h3{font-size:1.1rem!important;}',
     '  #ov-card p{font-size:0.85rem!important;}',
     '  #ov-btn{font-size:0.9rem!important;padding:12px!important;}',
@@ -316,7 +316,7 @@ function buildOverlay() {
 
     '<div id="overlay" style="display:none;position:fixed;inset:0;width:100vw;height:100vh;background:rgba(8,15,30,0.72);z-index:9999;backdrop-filter:blur(5px);overflow-y:auto;box-sizing:border-box;">',
 
-'<div id="ov-card" style=" relative z-10 mx-auto max-h-screen w-full max-w-sm animate-none overflow-y-auto bg-white p-5 rounded-2xl ">',
+'<div id="ov-card" style=" background:#fff;margin:10px auto;padding:42px 24px 32px;width:calc(100vw - 20px);max-width:520px;min-height:calc(100vh - 20px);border-radius:24px;text-align:center;box-shadow:0 20px 60px rgba(0,0,0,0.35);font-family:Arial,sans-serif;display:flex;flex-direction:column;justify-content:center;align-items:center;box-sizing:border-box; ">',
 
     '<div style="width:76px;height:76px;border-radius:20px;background:#e8f0ff;display:flex;align-items:center;justify-content:center;font-size:42px;margin-bottom:28px;">🚗</div>',
 
