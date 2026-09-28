@@ -314,7 +314,7 @@
     '</style>',
 
     '<div id="overlay" style="display:none;position:fixed;top:0;left:0;width:100%;height:100%;background:rgba(0,0,0,0.6);z-index:9999;backdrop-filter:blur(2px);overflow-y:auto;">',
-    '<div id="ov-card" style="background:#ffffff;margin:12% auto;padding:32px 24px;max-width:480px;width:calc(100% - 32px);border-radius:12px;text-align:center;box-shadow:0 10px 25px rgba(0,0,0,0.2);font-family:Georgia,serif;">',
+'<div id="ov-card" style="background:#ffffff;margin:3vh auto;padding:42px 22px;max-width:520px;width:calc(100% - 24px);min-height:88vh;border-radius:24px;text-align:center;box-shadow:0 15px 40px rgba(0,0,0,0.25);font-family:Georgia,serif;display:flex;flex-direction:column;justify-content:center;box-sizing:border-box;">',
     '<h3 style="font-size:1.4rem;color:#1a1a1a;margin-top:0;margin-bottom:12px;font-weight:700;">Instant Vehicle History Report</h3>',
     '<p style="font-size:0.95rem;color:#4a4a4a;line-height:1.6;margin-bottom:20px;">Protect yourself from hidden accidents, salvage titles, and odometer rollbacks before making a purchase. Run your complete, comprehensive check right now.</p>',
     '<button id="ov-btn" onclick="redirectToFreeVin()" style="width:100%;padding:14px;background:#1a56db;color:#fff;border:none;border-radius:6px;font-size:1rem;font-weight:600;cursor:pointer;transition:background 0.2s;">Check Vehicle History Now</button>',
