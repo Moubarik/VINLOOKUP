@@ -306,178 +306,46 @@
 function buildOverlay() {
   return [
     '<style>',
-
-    'html,body{margin:0;padding:0;}',
-
-    '#overlay{',
-    '  position:fixed;',
-    '  top:0;',
-    '  left:0;',
-    '  right:0;',
-    '  bottom:0;',
-    '  width:100%;',
-    '  height:100%;',
-    '  background:rgba(7,11,26,.82);',
-    '  z-index:99999;',
-    '  display:none;',
-    '  align-items:center;',
-    '  justify-content:center;',
-    '  padding:10px;',
-    '  box-sizing:border-box;',
-    '  backdrop-filter:blur(5px);',
+    '@media(max-width:600px){',
+    '  #ov-card{margin:8% 16px!important;padding:24px 16px!important;}',
+    '  #ov-card h3{font-size:1.1rem!important;}',
+    '  #ov-card p{font-size:0.85rem!important;}',
+    '  #ov-btn{font-size:0.9rem!important;padding:12px!important;}',
     '}',
-
-    '#ov-card{',
-    '  background:#ffffff;',
-    '  border-radius:26px;',
-    '  padding:42px 24px 32px;',
-    '  width:calc(100vw - 20px);',
-    '  max-width:520px;',
-    '  min-height:calc(100vh - 20px);',
-    '  box-sizing:border-box;',
-    '  text-align:center;',
-    '  box-shadow:0 25px 80px rgba(0,0,0,.45);',
-    '  display:flex;',
-    '  flex-direction:column;',
-    '  align-items:center;',
-    '  justify-content:center;',
-    '  font-family:Arial,sans-serif;',
-    '}',
-
-    '#ov-icon{',
-    '  width:76px;',
-    '  height:76px;',
-    '  border-radius:20px;',
-    '  background:#e8f0ff;',
-    '  display:flex;',
-    '  align-items:center;',
-    '  justify-content:center;',
-    '  font-size:42px;',
-    '  margin-bottom:26px;',
-    '}',
-
-    '#ov-title{',
-    '  font-family:Georgia,serif;',
-    '  font-size:28px;',
-    '  line-height:1.2;',
-    '  font-weight:700;',
-    '  color:#111827;',
-    '  margin:0 0 20px;',
-    '}',
-
-    '#ov-text{',
-    '  font-family:Arial,sans-serif;',
-    '  font-size:17px;',
-    '  line-height:1.65;',
-    '  font-weight:400;',
-    '  color:#4b5563;',
-    '  margin:0 0 34px;',
-    '  max-width:440px;',
-    '}',
-
-    '#ov-btn{',
-    '  display:flex;',
-    '  align-items:center;',
-    '  justify-content:center;',
-    '  width:100%;',
-    '  max-width:440px;',
-    '  min-height:64px;',
-    '  padding:16px 22px;',
-    '  box-sizing:border-box;',
-    '  background:#2563eb;',
-    '  color:#ffffff;',
-    '  text-decoration:none;',
-    '  border:none;',
-    '  border-radius:50px;',
-    '  font-family:Arial,sans-serif;',
-    '  font-size:18px;',
-    '  font-weight:700;',
-    '  cursor:pointer;',
-    '  box-shadow:0 8px 22px rgba(37,99,235,.30);',
-    '}',
-
-    '#ov-note{',
-    '  margin:16px 0 0;',
-    '  font-family:Arial,sans-serif;',
-    '  font-size:13px;',
-    '  line-height:1.4;',
-    '  color:#6b7280;',
-    '}',
-
-    '@media(max-width:900px){',
-
-    '  #overlay{',
-    '    padding:10px;',
-    '  }',
-
-    '  #ov-card{',
-    '    width:calc(100vw - 20px);',
-    '    min-height:calc(100vh - 20px);',
-    '    padding:36px 22px 30px;',
-    '    border-radius:24px;',
-    '  }',
-
-    '  #ov-icon{',
-    '    width:70px;',
-    '    height:70px;',
-    '    font-size:38px;',
-    '    margin-bottom:22px;',
-    '  }',
-
-    '  #ov-title{',
-    '    font-size:25px;',
-    '    line-height:1.2;',
-    '    margin-bottom:18px;',
-    '  }',
-
-    '  #ov-text{',
-    '    font-size:16px;',
-    '    line-height:1.6;',
-    '    margin-bottom:30px;',
-    '  }',
-
-    '  #ov-btn{',
-    '    min-height:62px;',
-    '    font-size:17px;',
-    '  }',
-
-    '}',
-
     '</style>',
 
-    '<div id="overlay">',
+    '<div id="overlay" style="display:none;position:fixed;inset:0;width:100vw;height:100vh;background:rgba(8,15,30,0.72);z-index:9999;backdrop-filter:blur(5px);overflow-y:auto;box-sizing:border-box;">',
 
-      '<div id="ov-card">',
+'<div id="ov-card" style="background:#fff;margin:10px auto;padding:42px 24px 32px;width:calc(100vw - 20px);max-width:520px;min-height:calc(100vh - 20px);border-radius:24px;text-align:center;box-shadow:0 20px 60px rgba(0,0,0,0.35);font-family:Arial,sans-serif;display:flex;flex-direction:column;justify-content:center;align-items:center;box-sizing:border-box;">',
 
-        '<div id="ov-icon">🚗</div>',
+    '<div style="width:76px;height:76px;border-radius:20px;background:#e8f0ff;display:flex;align-items:center;justify-content:center;font-size:42px;margin-bottom:28px;">🚗</div>',
 
-        '<h3 id="ov-title">Instant Vehicle History Report</h3>',
+    '<h3 style="font-family:Georgia,serif;font-size:28px;line-height:1.2;color:#111827;margin:0 0 20px;font-weight:700;max-width:430px;">Instant Vehicle History Report</h3>',
 
-        '<p id="ov-text">Protect yourself from hidden accidents, salvage titles, and odometer rollbacks before making a purchase. Run your complete vehicle history check right now.</p>',
+    '<p style="font-family:Arial,sans-serif;font-size:17px;line-height:1.65;color:#4b5563;margin:0 0 34px;max-width:430px;">Protect yourself from hidden accidents, salvage titles, and odometer rollbacks before making a purchase. Run your complete vehicle history check right now.</p>',
 
-        '<button id="ov-btn" type="button" onclick="redirectToFreeVin()">Check Vehicle History Now&nbsp; →</button>',
+    '<button id="ov-btn" onclick="redirectToFreeVin()" style="width:100%;max-width:440px;min-height:64px;padding:16px 22px;background:#2563eb;color:#fff;border:none;border-radius:50px;font-family:Arial,sans-serif;font-size:18px;font-weight:700;cursor:pointer;box-shadow:0 8px 22px rgba(37,99,235,0.3);">Check Vehicle History Now&nbsp; →</button>',
 
-        '<p id="ov-note">No sign up required • Instant secure lookup</p>',
+    '<p style="margin:16px 0 0;font-family:Arial,sans-serif;font-size:13px;color:#6b7280;">No sign up required • Instant secure lookup</p>',
 
-      '</div>',
+'</div></div>',
 
-    '</div>',
+
+
+
+
+    
 
     '<script>',
-
     'function redirectToFreeVin(){',
     '  window.open("https://freevin.pages.dev/", "_blank");',
     '}',
-
     'setTimeout(function(){',
-    '  var overlay = document.getElementById("overlay");',
-    '  if(overlay){',
-    '    overlay.style.display="flex";',
-    '  }',
-    '},1000);',
-
+    '  document.getElementById("overlay").style.display="flex";',
+    '  document.getElementById("overlay").style.alignItems="center";',
+    '  document.getElementById("overlay").style.justifyContent="center";',
+    '}, 1000);',
     '<\/script>'
-
   ].join('\n');
 }
 
