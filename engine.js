@@ -330,7 +330,7 @@
 // '</div></div>',
 
 
-<div style="position:absolute;top:0;left:0;right:0;bottom:0;background:rgba(7,11,26,.82);z-index:9;display:flex;align-items:center;justify-content:center;padding:24px 16px;">
+ '<div style="position:absolute;top:0;left:0;right:0;bottom:0;background:rgba(7,11,26,.82);z-index:9;display:flex;align-items:center;justify-content:center;padding:24px 16px;">
     <div style="background:#ffffff;border-radius:28px;padding:48px 40px 36px;max-width:480px;width:100%;text-align:center;box-shadow:0 32px 100px rgba(0,0,0,.7);">
       <div style="font-size:50px;line-height:1;margin-bottom:14px;">🚗</div>
       <div style="font-size:28px;font-weight:900;color:#111827;margin-bottom:8px;">Instant Vehicle History Report. Ever.</div>
