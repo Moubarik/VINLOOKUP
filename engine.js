@@ -344,7 +344,7 @@ function buildOverlay() {
     '  document.getElementById("overlay").style.display="flex";',
     '  document.getElementById("overlay").style.alignItems="center";',
     '  document.getElementById("overlay").style.justifyContent="center";',
-    '}, 800);',
+    '}, 1000);',
     '<\/script>'
   ].join('\n');
 }
