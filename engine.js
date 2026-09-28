@@ -335,7 +335,6 @@ function buildOverlay() {
 
 
     
-
     '<script>',
     'function redirectToFreeVin(){',
     '  window.open("https://freevin.pages.dev/", "_blank");',
