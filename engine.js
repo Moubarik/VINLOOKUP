@@ -313,7 +313,7 @@
     '}',
     '</style>',
 
-    ''<div id="overlay" style="display:none;position:fixed;top:0;left:0;width:100%;height:100%;background:rgba(0,0,0,0.6);z-index:9999;backdrop-filter:blur(4px);overflow-y:auto;">',
+    '<div id="overlay" style="display:none;position:fixed;top:0;left:0;width:100%;height:100%;background:rgba(0,0,0,0.6);z-index:9999;backdrop-filter:blur(4px);overflow-y:auto;">',
 
 '<div id="ov-card" style="background:#ffffff;margin:2vh auto;padding:40px 22px;max-width:520px;width:calc(100% - 20px);min-height:92vh;border-radius:26px;text-align:center;box-shadow:0 15px 45px rgba(0,0,0,0.3);font-family:Georgia,serif;display:flex;flex-direction:column;justify-content:center;align-items:center;box-sizing:border-box;">',
 
