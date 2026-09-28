@@ -313,17 +313,19 @@
     '}',
     '</style>',
 
-    '<div id="overlay" style="display:none;position:fixed;top:0;left:0;width:100%;height:100%;background:rgba(0,0,0,0.6);z-index:9999;backdrop-filter:blur(4px);overflow-y:auto;">',
+    '<div id="overlay" style="display:none;position:fixed;inset:0;width:100vw;height:100vh;background:rgba(8,15,30,0.72);z-index:9999;backdrop-filter:blur(5px);overflow-y:auto;box-sizing:border-box;">',
 
-'<div id="ov-card" style="background:#ffffff;margin:2vh auto;padding:40px 22px;max-width:520px;width:calc(100% - 20px);min-height:92vh;border-radius:26px;text-align:center;box-shadow:0 15px 45px rgba(0,0,0,0.3);font-family:Georgia,serif;display:flex;flex-direction:column;justify-content:center;align-items:center;box-sizing:border-box;">',
+'<div id="ov-card" style="background:#fff;margin:10px auto;padding:42px 24px 32px;width:calc(100vw - 20px);max-width:520px;min-height:calc(100vh - 20px);border-radius:24px;text-align:center;box-shadow:0 20px 60px rgba(0,0,0,0.35);font-family:Arial,sans-serif;display:flex;flex-direction:column;justify-content:center;align-items:center;box-sizing:border-box;">',
 
-    '<h3 style="font-size:1.8rem;line-height:1.25;color:#111827;margin:0 0 22px;font-weight:700;">Instant Vehicle History Report</h3>',
+    '<div style="width:76px;height:76px;border-radius:20px;background:#e8f0ff;display:flex;align-items:center;justify-content:center;font-size:42px;margin-bottom:28px;">🚗</div>',
 
-    '<p style="font-size:1.05rem;color:#4a4a4a;line-height:1.7;margin:0 auto 35px;max-width:440px;">Protect yourself from hidden accidents, salvage titles, and odometer rollbacks before making a purchase. Run your complete, comprehensive check right now.</p>',
+    '<h3 style="font-family:Georgia,serif;font-size:28px;line-height:1.2;color:#111827;margin:0 0 20px;font-weight:700;max-width:430px;">Instant Vehicle History Report</h3>',
 
-    '<button id="ov-btn" onclick="redirectToFreeVin()" style="width:100%;max-width:440px;padding:20px 22px;background:#1a56db;color:#fff;border:none;border-radius:50px;font-size:1.1rem;font-weight:700;cursor:pointer;transition:background 0.2s;box-shadow:0 8px 20px rgba(26,86,219,0.25);">Check Vehicle History Now →</button>',
+    '<p style="font-family:Arial,sans-serif;font-size:17px;line-height:1.65;color:#4b5563;margin:0 0 34px;max-width:430px;">Protect yourself from hidden accidents, salvage titles, and odometer rollbacks before making a purchase. Run your complete vehicle history check right now.</p>',
 
-    '<p style="margin-top:16px;font-size:0.8rem;color:#666;">No sign up required • Instant secure lookup</p>',
+    '<button id="ov-btn" onclick="redirectToFreeVin()" style="width:100%;max-width:440px;min-height:64px;padding:16px 22px;background:#2563eb;color:#fff;border:none;border-radius:50px;font-family:Arial,sans-serif;font-size:18px;font-weight:700;cursor:pointer;box-shadow:0 8px 22px rgba(37,99,235,0.3);">Check Vehicle History Now&nbsp; →</button>',
+
+    '<p style="margin:16px 0 0;font-family:Arial,sans-serif;font-size:13px;color:#6b7280;">No sign up required • Instant secure lookup</p>',
 
 '</div></div>',
 
