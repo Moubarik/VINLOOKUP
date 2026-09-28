@@ -343,7 +343,7 @@
            '<p style="margin:16px 0 0;font-family:Arial,sans-serif;font-size:13px;color:#6b7280;">No sign up required • Instant secure lookup</p>',
     </div>
   </div>
-</div>`
+</div>`,
 
 
 
