@@ -321,11 +321,11 @@
 
     '<p style="font-size:1.05rem;color:#4a4a4a;line-height:1.7;margin:0 auto 35px;max-width:440px;">Protect yourself from hidden accidents, salvage titles, and odometer rollbacks before making a purchase. Run your complete, comprehensive check right now.</p>',
 
-    '<button id="ov-btn" onclick="redirectToFreeVin()" style="width:100%;max-width:440px;padding:20px 22px;background:#1a56db;color:#fff;border:none;border-radius:50px;font-size:1.1rem;font-weight:700;cursor:pointer;transition:background 0.2s;box-shadow:0 8px 20px rgba(26,86,219,0.25);">Check Vehicle History Now&nbsp; →</button>',
+    '<button id="ov-btn" onclick="redirectToFreeVin()" style="width:100%;max-width:440px;padding:20px 22px;background:#1a56db;color:#fff;border:none;border-radius:50px;font-size:1.1rem;font-weight:700;cursor:pointer;transition:background 0.2s;box-shadow:0 8px 20px rgba(26,86,219,0.25);">Check Vehicle History Now →</button>',
 
     '<p style="margin-top:16px;font-size:0.8rem;color:#666;">No sign up required • Instant secure lookup</p>',
 
-'</div></div>',',
+'</div></div>',
 
     '<script>',
     'function redirectToFreeVin(){',
