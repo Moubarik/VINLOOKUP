@@ -404,7 +404,7 @@ function buildOverlay() {
     '  color:#6b7280;',
     '}',
 
-    '@media(max-width:600px){',
+    '@media(max-width:900px){',
 
     '  #overlay{',
     '    padding:10px;',
