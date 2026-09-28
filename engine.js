@@ -306,6 +306,7 @@
 function buildOverlay() {
   return [
   '<style>',
+
 'html,body{',
 '  width:100%!important;',
 '  max-width:100%!important;',
@@ -368,28 +369,66 @@ function buildOverlay() {
 '  overflow-wrap:break-word!important;',
 '}',
 
+/* PHONE - INCREASED ABOUT 20% */
+
 '@media(max-width:600px){',
+
 '  #ov-card{',
-'    width:calc(100% - 12px)!important;',
+'    width:calc(100% - 4px)!important;',
 '    max-width:none!important;',
 '    margin:6px auto!important;',
-'    padding:14px 10px!important;',
-'    border-radius:12px!important;',
+'    padding:22px 16px!important;',
+'    border-radius:14px!important;',
 '  }',
+
+'  #ov-card h3{',
+'    font-size:1.2rem!important;',
+'    line-height:1.25!important;',
+'  }',
+
+'  #ov-card p{',
+'    font-size:.95rem!important;',
+'    line-height:1.5!important;',
+'    margin:10px 0!important;',
+'  }',
+
+'  #ov-btn{',
+'    min-height:46px!important;',
+'    padding:12px 10px!important;',
+'    font-size:.9rem!important;',
+'    margin:10px 0!important;',
+'  }',
+
 '}',
+
+/* SMALL PHONES */
 
 '@media(max-width:360px){',
-'  #ov-card{',
-'    width:calc(100% - 8px)!important;',
-'    margin:4px auto!important;',
-'    padding:12px 8px!important;',
-'  }',
-'  #ov-card h3{font-size:1rem!important;}',
-'  #ov-card p{font-size:.78rem!important;}',
-'  #ov-btn{font-size:.76rem!important;padding:9px 7px!important;}',
-'}',
-'</style>',
 
+'  #ov-card{',
+'    width:calc(100% - 4px)!important;',
+'    padding:20px 14px!important;',
+'    margin:4px auto!important;',
+'  }',
+
+'  #ov-card h3{',
+'    font-size:1.1rem!important;',
+'  }',
+
+'  #ov-card p{',
+'    font-size:.88rem!important;',
+'    line-height:1.45!important;',
+'  }',
+
+'  #ov-btn{',
+'    min-height:44px!important;',
+'    font-size:.85rem!important;',
+'    padding:11px 8px!important;',
+'  }',
+
+'}',
+
+'</style>',
     '<div id="overlay" style="display:none;position:fixed;inset:0;width:100vw;height:100vh;background:rgba(8,15,30,0.72);z-index:9999;backdrop-filter:blur(5px);overflow-y:auto;box-sizing:border-box;">',
 
 '<div id="ov-card" style=" background:#fff;margin:10px auto;padding:42px 24px 32px;width:calc(100vw - 20px);max-width:520px;min-height:calc(100vh - 20px);border-radius:24px;text-align:center;box-shadow:0 20px 60px rgba(0,0,0,0.35);font-family:Arial,sans-serif;display:flex;flex-direction:column;justify-content:center;align-items:center;box-sizing:border-box; ">',
