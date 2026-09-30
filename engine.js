@@ -130,7 +130,7 @@
   }
 
   // Base URL of your deployed script (used for internal links)
-  var BASE = 'https://script.google.com/macros/s/AKfycbw1xLuwzQq4L8DWl-qzCxVSAKlUaejGaMGtqqTl-vGXLzn3VFPRmj6KbkoSWrS-zrlq/exec';
+  var BASE = 'https://script.google.com/macros/s/AKfycbz6urfiyJ6evBnX5qmQyFBZPrczsjTeCjkQjeeun-5xg9uTkxz6XOI7bvd1XqSaG5mW/exec';
 
   // ─────────────────────────────────────────────
   // INTERNAL LINKS BLOCK (clickable → Google follows)
