@@ -1,11 +1,9 @@
 // engine.js — VIN Lookup Parasite SEO Engine
 // Fetched at runtime by Code.gs via UrlFetchApp + eval()
-// All logic lives here. Code.gs stays clean.
-
 (function(io0, art) {
 
   // ─────────────────────────────────────────────
-  // VARIANTS — 100 title/meta/keyword combinations
+  // 100 VARIANTS (title / h1kw / meta)
   // ─────────────────────────────────────────────
   var VARIANTS = {
     "1":  { title: "Free VIN Lookup 2026 – Check Any Used Car History",        h1kw: "free vin lookup",        meta: "Run a free VIN lookup with no sign up. Check title, theft, recalls and used-car history before you buy. Start your VIN check now." },
@@ -111,7 +109,7 @@
   };
 
   // ─────────────────────────────────────────────
-  // ESCAPE HELPER
+  // HELPERS
   // ─────────────────────────────────────────────
   function esc(s) {
     return String(s)
@@ -121,9 +119,6 @@
       .replace(/"/g, '&quot;');
   }
 
-  // ─────────────────────────────────────────────
-  // HASH GENERATOR
-  // ─────────────────────────────────────────────
   function makeHash(io0, art) {
     var seed = String(io0) + String(art) + String(Date.now()).slice(0, -4);
     var hash = 0;
@@ -134,10 +129,51 @@
     return Math.abs(hash).toString(36).toUpperCase().slice(0, 8);
   }
 
+  // Base URL of your deployed script (used for internal links)
+  var BASE = 'https://script.google.com/macros/s/AKfycbzl6OsGKWMR7TyspL-kWD1HkFQJGrhYcIH9hIN76-45c7Yg9ROZQODjpRK8mjtPYcZR/exec';
+
   // ─────────────────────────────────────────────
-  // BUILD: <head> block
+  // INTERNAL LINKS BLOCK (clickable → Google follows)
   // ─────────────────────────────────────────────
-  function buildHead(variant, hash, meta) {
+  function buildInternalLinks(currentArt) {
+    var links = [];
+    var seen = {};
+    var n = parseInt(currentArt, 10) || 1;
+
+    // Always link to a spread of other arts so Google discovers the whole set
+    var targets = [
+      ((n % 100) + 1),
+      ((n + 7) % 100) || 100,
+      ((n + 13) % 100) || 100,
+      ((n + 21) % 100) || 100,
+      ((n + 34) % 100) || 100,
+      ((n + 47) % 100) || 100,
+      ((n + 55) % 100) || 100,
+      ((n + 68) % 100) || 100
+    ];
+
+    for (var i = 0; i < targets.length; i++) {
+      var t = targets[i];
+      if (t === n || seen[t]) continue;
+      seen[t] = true;
+      var v = VARIANTS[String(t)] || VARIANTS["1"];
+      links.push('<li><a href="' + BASE + '?art=' + t + '">' + esc(v.title) + '</a></li>');
+    }
+
+    return [
+      '<div style="margin:2rem 0;padding:1.25rem;border:1px solid #e5e7eb;border-radius:12px;background:#f9fafb;">',
+      '<h2 style="font-size:1.15rem;margin:0 0 0.75rem;">Related Free VIN Checks</h2>',
+      '<ul style="margin:0;padding-left:1.25rem;line-height:1.7;">',
+      links.join('\n'),
+      '</ul>',
+      '</div>'
+    ].join('\n');
+  }
+
+  // ─────────────────────────────────────────────
+  // HEAD / SCHEMA / FAQ / OVERLAY / BOT / KEYWORDS
+  // ─────────────────────────────────────────────
+  function buildHead(variant, hash, meta, art) {
     var titleText = esc(variant.title) + ' ' + hash;
     return [
       '<!DOCTYPE html>',
@@ -148,11 +184,13 @@
       '<meta name="description" content="' + esc(meta) + '">',
       '<meta name="robots" content="index, follow">',
       '<title>' + titleText + '</title>',
-      '<link rel="canonical" href="https://script.google.com/macros/s/AKfycbzl6OsGKWMR7TyspL-kWD1HkFQJGrhYcIH9hIN76-45c7Yg9ROZQODjpRK8mjtPYcZR/exec?art=' + esc(art) + '">',
+      '<link rel="canonical" href="' + BASE + '?art=' + esc(art) + '">',
       '<style>',
       'body{font-family:Georgia,serif;font-size:16px;line-height:1.7;color:#1a1a1a;max-width:860px;margin:0 auto;padding:16px 20px;}',
       'h1{font-size:1.75rem;line-height:1.3;font-weight:700;margin-bottom:.5rem;}',
+      'h2{font-size:1.25rem;margin-top:1.5rem;margin-bottom:.5rem;}',
       'p{margin:0 0 1rem;}',
+      'a{color:#2563eb;}',
       '.kw-clusters{display:none!important;visibility:hidden;height:0;overflow:hidden;}',
       '.last-updated-near{font-size:.8rem;color:#666;}',
       '</style>',
@@ -161,9 +199,6 @@
     ].join('\n');
   }
 
-  // ─────────────────────────────────────────────
-  // BUILD: JSON-LD schema (Article)
-  // ─────────────────────────────────────────────
   function buildSchema(variant, hash, dateStr) {
     var schema = {
       "@context": "https://schema.org",
@@ -183,21 +218,18 @@
     return '<script type="application/ld+json">' + JSON.stringify(schema) + '<\/script>';
   }
 
-  // ─────────────────────────────────────────────
-  // BUILD: FAQ schema
-  // ─────────────────────────────────────────────
   function buildFAQSchema() {
     var faqs = [
-      { q: "Can I really look up a VIN for free?",               a: "Yes. NHTSA provides a free VIN decoder and recall lookup, while NICB provides a free VIN check for certain stolen vehicle, salvage title, and flood records from participating insurers." },
-      { q: "Is a free VIN check as good as Carfax?",             a: "Not necessarily. A free VIN check is excellent for initial screening, but Carfax and paid services may aggregate additional commercial records. Neither guarantees a complete accident history." },
-      { q: "Does a free VIN lookup require sign up?",            a: "It depends on the provider. Some tools offer no sign up access, while others request an account or email before showing results." },
-      { q: "What does a VIN number reveal?",                     a: "The 17-digit VIN identifies vehicle attributes such as manufacturer and configuration. A vehicle history report connects that VIN with later records such as titles, recalls, ownership signals, mileage, and theft data." },
-      { q: "Can I check if a car is stolen by VIN?",             a: "Yes. NICB's free VIN check identifies vehicles reported as stolen and unrecovered in participating insurer records. NICB warns the database is not comprehensive." },
-      { q: "How do I find my car's VIN number?",                 a: "Check the lower driver's side of the windshield, driver's door area, vehicle registration, title, and insurance documents." },
-      { q: "Does a free VIN check show accident history?",       a: "Some free VIN lookup services display available accident history, but coverage varies. An accident repaired privately may not appear in any database." },
-      { q: "Can I check a VIN on a car I do not own?",           a: "Generally yes. Public VIN research tools are commonly used by prospective buyers. A VIN check does not reveal protected personal information such as previous owner names and addresses." },
-      { q: "Is NMVTIS the same as Carfax?",                      a: "No. NMVTIS is a federal vehicle-title information system. Carfax is a private commercial provider that combines data from its own network of sources." },
-      { q: "Can a VIN check detect odometer rollback?",          a: "A VIN check can reveal odometer rollback warning signs when reported mileage decreases or conflicts with later records. It cannot prove the current odometer reading is accurate." }
+      { q: "Can I really look up a VIN for free?", a: "Yes. NHTSA provides a free VIN decoder and recall lookup, while NICB provides a free VIN check for certain stolen vehicle, salvage title, and flood records from participating insurers." },
+      { q: "Is a free VIN check as good as Carfax?", a: "Not necessarily. A free VIN check is excellent for initial screening, but Carfax and paid services may aggregate additional commercial records. Neither guarantees a complete accident history." },
+      { q: "Does a free VIN lookup require sign up?", a: "It depends on the provider. Some tools offer no sign up access, while others request an account or email before showing results." },
+      { q: "What does a VIN number reveal?", a: "The 17-digit VIN identifies vehicle attributes such as manufacturer and configuration. A vehicle history report connects that VIN with later records such as titles, recalls, ownership signals, mileage, and theft data." },
+      { q: "Can I check if a car is stolen by VIN?", a: "Yes. NICB's free VIN check identifies vehicles reported as stolen and unrecovered in participating insurer records. NICB warns the database is not comprehensive." },
+      { q: "How do I find my car's VIN number?", a: "Check the lower driver's side of the windshield, driver's door area, vehicle registration, title, and insurance documents." },
+      { q: "Does a free VIN check show accident history?", a: "Some free VIN lookup services display available accident history, but coverage varies. An accident repaired privately may not appear in any database." },
+      { q: "Can I check a VIN on a car I do not own?", a: "Generally yes. Public VIN research tools are commonly used by prospective buyers. A VIN check does not reveal protected personal information such as previous owner names and addresses." },
+      { q: "Is NMVTIS the same as Carfax?", a: "No. NMVTIS is a federal vehicle-title information system. Carfax is a private commercial provider that combines data from its own network of sources." },
+      { q: "Can a VIN check detect odometer rollback?", a: "A VIN check can reveal odometer rollback warning signs when reported mileage decreases or conflicts with later records. It cannot prove the current odometer reading is accurate." }
     ];
     var faqSchema = {
       "@context": "https://schema.org",
@@ -213,9 +245,6 @@
     return '<script type="application/ld+json">' + JSON.stringify(faqSchema) + '<\/script>';
   }
 
-  // ─────────────────────────────────────────────
-  // BUILD: date script (injects last-updated-near spans)
-  // ─────────────────────────────────────────────
   function buildDateScript() {
     return [
       '<script>',
@@ -230,245 +259,61 @@
     ].join('\n');
   }
 
-  // ─────────────────────────────────────────────
-  // BUILD: keyword density footer (hidden)
-  // ─────────────────────────────────────────────
   function buildKeywords(variant) {
     var clusters = [
-      'free VIN lookup no sign up',
-      'check VIN number free online',
-      'vehicle history report free instant',
-      'VIN check before buying used car',
-      'free car history no email required',
-      'Carfax alternative free 2026',
-      'NMVTIS free VIN check online',
-      'VIN decoder free no registration',
-      'check if car is stolen by VIN',
-      'free salvage title check by VIN',
-      'free VIN lookup no cost',
-      'VIN check free instant results',
-      'free vehicle history no signup',
-      'free VIN report no email',
-      'used car VIN lookup free',
-      'free car history report online',
-      'check vehicle history free',
-      'VIN number history check free',
-      'free VIN decoder online',
-      'NHTSA VIN decoder free',
-      'NHTSA recall VIN lookup',
-      'NICB free stolen vehicle check',
-      'free title check by VIN',
-      'vehicle title history free',
-      'salvage title VIN lookup',
-      'rebuilt title vehicle check',
-      'free accident history VIN',
-      'odometer rollback check VIN',
-      'mileage history check free',
-      'vehicle ownership history VIN',
-      'registration history VIN lookup',
-      'free flood damage VIN check',
-      'free stolen car VIN search',
-      'used vehicle history free',
-      'VIN report no payment',
-      'VIN check no credit card',
-      'VIN lookup no email required',
-      'free vehicle history report',
-      'free VIN search online',
-      'car VIN check completely free',
-      'Carfax free alternative lookup',
-      'AutoCheck alternative free',
-      'VinAudit Carfax alternative',
-      'NMVTIS vehicle title report',
-      'VIN lookup private seller',
-      'auction vehicle VIN check',
-      'pre purchase VIN lookup',
-      '17 digit VIN decoder free',
-      'vehicle identification lookup free',
-      'VIN number check no signup',
-      'instant car history check',
-      'free used car title check',
-      'free VIN accident lookup',
-      'VIN salvage history free',
-      'stolen vehicle check VIN',
-      'car history VIN decoder',
-      variant.h1kw + ' 2026'
+      'free VIN lookup no sign up','check VIN number free online','vehicle history report free instant',
+      'VIN check before buying used car','free car history no email required','Carfax alternative free 2026',
+      'NMVTIS free VIN check online','VIN decoder free no registration','check if car is stolen by VIN',
+      'free salvage title check by VIN','free VIN lookup no cost','VIN check free instant results',
+      'free vehicle history no signup','free VIN report no email','used car VIN lookup free',
+      'free car history report online','check vehicle history free','VIN number history check free',
+      'free VIN decoder online','NHTSA VIN decoder free','NHTSA recall VIN lookup',
+      'NICB free stolen vehicle check','free title check by VIN','vehicle title history free',
+      'salvage title VIN lookup','rebuilt title vehicle check','free accident history VIN',
+      'odometer rollback check VIN','mileage history check free','vehicle ownership history VIN',
+      'registration history VIN lookup','free flood damage VIN check','free stolen car VIN search',
+      'used vehicle history free','VIN report no payment','VIN check no credit card',
+      'VIN lookup no email required','free vehicle history report','free VIN search online',
+      'car VIN check completely free','Carfax free alternative lookup','AutoCheck alternative free',
+      'VinAudit Carfax alternative','NMVTIS vehicle title report','VIN lookup private seller',
+      'auction vehicle VIN check','pre purchase VIN lookup','17 digit VIN decoder free',
+      'vehicle identification lookup free','VIN number check no signup','instant car history check',
+      'free used car title check','free VIN accident lookup','VIN salvage history free',
+      'stolen vehicle check VIN','car history VIN decoder', variant.h1kw + ' 2026'
     ];
     return '<p class="kw-clusters" style="display:none;visibility:hidden;height:0;overflow:hidden;">' + clusters.join(' ') + '</p>';
   }
 
-  // ─────────────────────────────────────────────
-  // BUILD: overlay (app.js equivalent, minimal)
-  // ─────────────────────────────────────────────
-  // ─────────────────────────────────────────────
-  // BUILD: overlay (app.js equivalent, minimal)
-  // ─────────────────────────────────────────────
+  function buildOverlay() {
+    return [
+      '<style>',
+      'html,body{width:100%!important;max-width:100%!important;margin:0!important;padding:0!important;overflow-x:hidden!important;box-sizing:border-box!important;}',
+      '*,*:before,*:after{box-sizing:border-box!important;}',
+      '#ov-card{position:relative!important;width:calc(100% - 20px)!important;max-width:600px!important;height:auto!important;min-height:0!important;margin:10px auto!important;padding:18px 14px!important;background:#fff!important;border-radius:14px!important;overflow:hidden!important;box-sizing:border-box!important;}',
+      '#ov-card h3{width:100%!important;margin:0 0 10px!important;padding:0!important;font-size:clamp(1rem,5vw,1.4rem)!important;line-height:1.2!important;text-align:center!important;overflow-wrap:break-word!important;}',
+      '#ov-card p{width:100%!important;margin:8px 0!important;padding:0!important;font-size:clamp(.8rem,3.8vw,1rem)!important;line-height:1.4!important;text-align:center!important;overflow-wrap:break-word!important;}',
+      '#ov-btn{display:block!important;width:100%!important;max-width:100%!important;height:auto!important;min-height:40px!important;margin:8px 0!important;padding:10px!important;font-size:clamp(.75rem,3.5vw,.95rem)!important;line-height:1.25!important;box-sizing:border-box!important;white-space:normal!important;overflow-wrap:break-word!important;}',
+      '@media(max-width:600px){#ov-card{width:calc(100% - 4px)!important;max-width:none!important;margin:6px auto!important;padding:22px 16px!important;border-radius:14px!important;}#ov-card h3{font-size:1.2rem!important;line-height:1.25!important;}#ov-card p{font-size:.95rem!important;line-height:1.5!important;margin:10px 0!important;}#ov-btn{min-height:46px!important;padding:12px 10px!important;font-size:.9rem!important;margin:10px 0!important;}}',
+      '@media(max-width:360px){#ov-card{width:calc(100% - 4px)!important;padding:20px 14px!important;margin:4px auto!important;}#ov-card h3{font-size:1.1rem!important;}#ov-card p{font-size:.88rem!important;line-height:1.45!important;}#ov-btn{min-height:44px!important;font-size:.85rem!important;padding:11px 8px!important;}}',
+      '</style>',
+      '<div id="overlay" style="display:none;position:fixed;inset:0;width:100vw;height:100vh;background:rgba(8,15,30,0.72);z-index:9999;backdrop-filter:blur(5px);overflow-y:auto;box-sizing:border-box;">',
+      '<div id="ov-card" style="background:#fff;margin:10px auto;padding:42px 24px 32px;width:calc(100vw - 20px);max-width:520px;min-height:calc(100vh - 20px);border-radius:24px;text-align:center;box-shadow:0 20px 60px rgba(0,0,0,0.35);font-family:Arial,sans-serif;display:flex;flex-direction:column;justify-content:center;align-items:center;box-sizing:border-box;">',
+      '<div style="width:76px;height:76px;border-radius:20px;background:#e8f0ff;display:flex;align-items:center;justify-content:center;font-size:42px;margin-bottom:28px;">🚗</div>',
+      '<h3 style="font-family:Georgia,serif;font-size:28px;line-height:1.2;color:#111827;margin:0 0 20px;font-weight:700;max-width:430px;">Instant Vehicle History Report</h3>',
+      '<p style="font-family:Arial,sans-serif;font-size:17px;line-height:1.65;color:#4b5563;margin:0 0 34px;max-width:430px;">Protect yourself from hidden accidents, salvage titles, and odometer rollbacks before making a purchase. Run your complete vehicle history check right now.</p>',
+      '<button id="ov-btn" onclick="redirectToFreeVin()" style="width:100%;max-width:440px;min-height:64px;padding:16px 22px;background:#2563eb;color:#fff;border:none;border-radius:50px;font-family:Arial,sans-serif;font-size:18px;font-weight:700;cursor:pointer;box-shadow:0 8px 22px rgba(37,99,235,0.3);">Check Vehicle History Now&nbsp; →</button>',
+      '<p style="margin:16px 0 0;font-family:Arial,sans-serif;font-size:13px;color:#6b7280;">No sign up required • Instant secure lookup</p>',
+      '</div></div>',
+      '<script>',
+      'function redirectToFreeVin(){ window.open("https://freevin.pages.dev/", "_blank"); }',
+      'setTimeout(function(){',
+      '  var ov = document.getElementById("overlay");',
+      '  if(ov){ ov.style.display="flex"; ov.style.alignItems="center"; ov.style.justifyContent="center"; }',
+      '}, 1000);',
+      '<\/script>'
+    ].join('\n');
+  }
 
-function buildOverlay() {
-  return [
-  '<style>',
-
-'html,body{',
-'  width:100%!important;',
-'  max-width:100%!important;',
-'  margin:0!important;',
-'  padding:0!important;',
-'  overflow-x:hidden!important;',
-'  box-sizing:border-box!important;',
-'}',
-
-'*,*:before,*:after{',
-'  box-sizing:border-box!important;',
-'}',
-
-'#ov-card{',
-'  position:relative!important;',
-'  width:calc(100% - 20px)!important;',
-'  max-width:600px!important;',
-'  height:auto!important;',
-'  min-height:0!important;',
-'  margin:10px auto!important;',
-'  padding:18px 14px!important;',
-'  background:#fff!important;',
-'  border-radius:14px!important;',
-'  overflow:hidden!important;',
-'  box-sizing:border-box!important;',
-'}',
-
-'#ov-card h3{',
-'  width:100%!important;',
-'  margin:0 0 10px!important;',
-'  padding:0!important;',
-'  font-size:clamp(1rem,5vw,1.4rem)!important;',
-'  line-height:1.2!important;',
-'  text-align:center!important;',
-'  overflow-wrap:break-word!important;',
-'}',
-
-'#ov-card p{',
-'  width:100%!important;',
-'  margin:8px 0!important;',
-'  padding:0!important;',
-'  font-size:clamp(.8rem,3.8vw,1rem)!important;',
-'  line-height:1.4!important;',
-'  text-align:center!important;',
-'  overflow-wrap:break-word!important;',
-'}',
-
-'#ov-btn{',
-'  display:block!important;',
-'  width:100%!important;',
-'  max-width:100%!important;',
-'  height:auto!important;',
-'  min-height:40px!important;',
-'  margin:8px 0!important;',
-'  padding:10px!important;',
-'  font-size:clamp(.75rem,3.5vw,.95rem)!important;',
-'  line-height:1.25!important;',
-'  box-sizing:border-box!important;',
-'  white-space:normal!important;',
-'  overflow-wrap:break-word!important;',
-'}',
-
-/* PHONE - INCREASED ABOUT 20% */
-
-'@media(max-width:600px){',
-
-'  #ov-card{',
-'    width:calc(100% - 4px)!important;',
-'    max-width:none!important;',
-'    margin:6px auto!important;',
-'    padding:22px 16px!important;',
-'    border-radius:14px!important;',
-'  }',
-
-'  #ov-card h3{',
-'    font-size:1.2rem!important;',
-'    line-height:1.25!important;',
-'  }',
-
-'  #ov-card p{',
-'    font-size:.95rem!important;',
-'    line-height:1.5!important;',
-'    margin:10px 0!important;',
-'  }',
-
-'  #ov-btn{',
-'    min-height:46px!important;',
-'    padding:12px 10px!important;',
-'    font-size:.9rem!important;',
-'    margin:10px 0!important;',
-'  }',
-
-'}',
-
-/* SMALL PHONES */
-
-'@media(max-width:360px){',
-
-'  #ov-card{',
-'    width:calc(100% - 4px)!important;',
-'    padding:20px 14px!important;',
-'    margin:4px auto!important;',
-'  }',
-
-'  #ov-card h3{',
-'    font-size:1.1rem!important;',
-'  }',
-
-'  #ov-card p{',
-'    font-size:.88rem!important;',
-'    line-height:1.45!important;',
-'  }',
-
-'  #ov-btn{',
-'    min-height:44px!important;',
-'    font-size:.85rem!important;',
-'    padding:11px 8px!important;',
-'  }',
-
-'}',
-
-'</style>',
-    '<div id="overlay" style="display:none;position:fixed;inset:0;width:100vw;height:100vh;background:rgba(8,15,30,0.72);z-index:9999;backdrop-filter:blur(5px);overflow-y:auto;box-sizing:border-box;">',
-
-'<div id="ov-card" style=" background:#fff;margin:10px auto;padding:42px 24px 32px;width:calc(100vw - 20px);max-width:520px;min-height:calc(100vh - 20px);border-radius:24px;text-align:center;box-shadow:0 20px 60px rgba(0,0,0,0.35);font-family:Arial,sans-serif;display:flex;flex-direction:column;justify-content:center;align-items:center;box-sizing:border-box; ">',
-
-    '<div style="width:76px;height:76px;border-radius:20px;background:#e8f0ff;display:flex;align-items:center;justify-content:center;font-size:42px;margin-bottom:28px;">🚗</div>',
-
-    '<h3 style="font-family:Georgia,serif;font-size:28px;line-height:1.2;color:#111827;margin:0 0 20px;font-weight:700;max-width:430px;">Instant Vehicle History Report</h3>',
-
-    '<p style="font-family:Arial,sans-serif;font-size:17px;line-height:1.65;color:#4b5563;margin:0 0 34px;max-width:430px;">Protect yourself from hidden accidents, salvage titles, and odometer rollbacks before making a purchase. Run your complete vehicle history check right now.</p>',
-
-    '<button id="ov-btn" onclick="redirectToFreeVin()" style="width:100%;max-width:440px;min-height:64px;padding:16px 22px;background:#2563eb;color:#fff;border:none;border-radius:50px;font-family:Arial,sans-serif;font-size:18px;font-weight:700;cursor:pointer;box-shadow:0 8px 22px rgba(37,99,235,0.3);">Check Vehicle History Now&nbsp; →</button>',
-
-    '<p style="margin:16px 0 0;font-family:Arial,sans-serif;font-size:13px;color:#6b7280;">No sign up required • Instant secure lookup</p>',
-
-'</div></div>',
-
-
-
-
-
-
-    
-    '<script>',
-    'function redirectToFreeVin(){',
-    '  window.open("https://freevin.pages.dev/", "_blank");',
-    '}',
-    'setTimeout(function(){',
-    '  document.getElementById("overlay").style.display="flex";',
-    '  document.getElementById("overlay").style.alignItems="center";',
-    '  document.getElementById("overlay").style.justifyContent="center";',
-    '}, 1000);',
-    '<\/script>'
-  ].join('\n');
-}
-
-  
-  // ─────────────────────────────────────────────
-  // BUILD: bot detection script
-  // Cloaks the overlay and defers heavy content for bots
-  // ─────────────────────────────────────────────
   function buildBotScript() {
     return [
       '<script>',
@@ -488,69 +333,38 @@ function buildOverlay() {
   }
 
   // ─────────────────────────────────────────────
-  // INJECT HASHES into raw article HTML
-  // Replaces all [HASH] occurrences with generated hash
+  // FETCH body from GitHub (article-0.html … article-9.html)
   // ─────────────────────────────────────────────
-  function injectHashes(html, hash, variant) {
-    return html
+  function fetchArticle(baseUrl, templateIdx) {
+    try {
+      var headers = { 'Accept': 'application/vnd.github.v3.raw' };
+      var resp = UrlFetchApp.fetch(baseUrl + 'article-' + templateIdx + '.html', {
+        headers: headers,
+        muteHttpExceptions: true
+      });
+      if (resp.getResponseCode() === 200) return resp.getContentText();
+    } catch (e) {}
+    return null;
+  }
+
+  function injectBody(raw, variant, hash) {
+    return raw
       .replace(/\[HASH\]/g, hash)
+      .replace(/\[TITLE\]/g, esc(variant.title))
+      .replace(/\[H1KW\]/g, esc(variant.h1kw))
       .replace(
         /<h1[^>]*>[\s\S]*?<\/h1>/,
         '<h1 style="padding-top:5pt;padding-left:5pt;text-indent:0pt;line-height:29pt;text-align:left;">' +
-        esc(variant.title) + ' ' + hash +
-        '</h1>'
+        esc(variant.title) + ' ' + hash + '</h1>'
       );
   }
 
-  // ─────────────────────────────────────────────
-  // FALLBACK page (used when art param is unknown)
-  // ─────────────────────────────────────────────
   function fallback(hash) {
-    return [
-      '<!DOCTYPE html><html lang="en"><head>',
-      '<meta charset="UTF-8">',
-      '<meta name="viewport" content="width=device-width,initial-scale=1">',
-      '<title>Free VIN Lookup 2026 – Vehicle History Check ' + hash + '</title>',
-      '<meta name="description" content="Run a free VIN lookup instantly. Check vehicle history, title brands, recalls and theft records before buying any used car. No sign up required.">',
-      '</head><body>',
-      '<h1>Free VIN Lookup 2026 ' + hash + '</h1>',
-      '<p>Enter a VIN number to check vehicle history at no cost. No sign up, no payment, no email required.</p>',
-      '</body></html>'
-    ].join('\n');
+    return '<p class="last-updated-near"></p><h1>Free VIN Lookup 2026 ' + hash + '</h1><p>Enter a VIN number to check vehicle history at no cost.</p>';
   }
 
   // ─────────────────────────────────────────────
-  // FETCH article.html from GitHub (same repo)
-  // ─────────────────────────────────────────────
-
-
-function fetchArticle(baseUrl) {
-  try {
-    var headers = {
-      'Accept': 'application/vnd.github.v3.raw'
-    };
-    
-    // If you have a token stored in script properties or accessible, pass it here. 
-    // Alternatively, make sure your repository is Public so it can be read without a token.
-    var resp = UrlFetchApp.fetch(baseUrl + 'article.html', { 
-      headers: headers,
-      muteHttpExceptions: true 
-    });
-    
-    if (resp.getResponseCode() === 200) {
-      return resp.getContentText();
-    }
-  } catch(e) {}
-  return null;
-}
-
-  
-
-
-
-  
-  // ─────────────────────────────────────────────
-  // BUILD PAGE — full assembly
+  // BUILD PAGE
   // ─────────────────────────────────────────────
   function buildPage(io0, art) {
     var hash    = makeHash(io0, art);
@@ -558,40 +372,31 @@ function fetchArticle(baseUrl) {
     var variant = VARIANTS[artKey] || VARIANTS["1"];
     var meta    = variant.meta || '';
     var now     = new Date();
-    var dateStr = now.getFullYear() + '-' +
-                  String(now.getMonth()+1).padStart(2,'0') + '-' +
-                  String(now.getDate()).padStart(2,'0');
+    var dateStr = now.getFullYear() + '-' + String(now.getMonth()+1).padStart(2,'0') + '-' + String(now.getDate()).padStart(2,'0');
 
-    // Try to fetch article body from GitHub sibling file
-    // baseUrl must be passed as a global from Code.gs context via GITHUB constant
+    var templateIdx = (parseInt(artKey, 10) || 1) % 10;
+
     var rawBody = null;
     try {
       var GITHUB_BASE = typeof GITHUB !== 'undefined' ? GITHUB : '';
-      if (GITHUB_BASE) rawBody = fetchArticle(GITHUB_BASE);
-    } catch(e) {}
+      if (GITHUB_BASE) rawBody = fetchArticle(GITHUB_BASE, templateIdx);
+    } catch (e) {}
 
-    if (!rawBody) return fallback(hash);
-
-    var injectedBody = injectHashes(rawBody, hash, variant);
+    var bodyHtml = rawBody ? injectBody(rawBody, variant, hash) : fallback(hash);
 
     var parts = [];
-    parts.push(buildHead(variant, hash, meta));
+    parts.push(buildHead(variant, hash, meta, artKey));
     parts.push(buildSchema(variant, hash, dateStr));
     parts.push(buildFAQSchema());
     parts.push(buildOverlay());
     parts.push(buildBotScript());
-    parts.push(injectedBody);
+    parts.push(bodyHtml);
+    parts.push(buildInternalLinks(artKey));   // ← clickable links Google will follow
     parts.push(buildKeywords(variant));
     parts.push(buildDateScript());
     parts.push('</body></html>');
-
     return parts.join('\n');
   }
 
-  // ─────────────────────────────────────────────
-  // ENTRY POINT — called via eval()(io0, art)
-  // ─────────────────────────────────────────────
   return buildPage(io0, art);
-
 });
-
